@@ -1,16 +1,29 @@
+import { mainStyle, newStyles } from "./options.js";
+import { firstArray } from "./data.js";
+import dayjs from "https://unpkg.com/dayjs@1.8.9/esm/index.js";
+
 /// VARIABLES
 const overallContainer = document.querySelector(".overall-container");
-const container = document.querySelector(".container");
-const containerStyles = overallContainer.innerHTML;
-const mainContainer = document.getElementById("js-messages");
-const happyIcon = document.querySelector(".happy-icon");
+const messagesContainer = document.getElementById("js-messages");
+const main = document.getElementById("js-main");
 const headerEl = document.getElementById("header");
+const spanEl = document.querySelector(".span");
+const chatNumber = document.querySelector(".chat-number");
+const actualTime = document.querySelector(".actual-time");
 
-mainContainer.addEventListener("click", containers);
+export let matchingData;
+messagesContainer.addEventListener("click", containers);
 function containers(event) {
   let clickedElement = event.target;
-  while (clickedElement !== mainContainer) {
+  while (clickedElement !== messagesContainer) {
     if (clickedElement.classList.contains("messages")) {
+      const elementData = clickedElement.dataset.profileId;
+      firstArray.forEach((data) => {
+        if (elementData == data.id) {
+          matchingData = data;
+        }
+      });
+      console.log(matchingData);
       const imageElement = clickedElement.querySelector("img");
       imageElement.classList.add("clicked-image");
       const titleElement = clickedElement.querySelector(".title");
@@ -21,6 +34,26 @@ function containers(event) {
         spanActualMessage === null
           ? newStyles(actualMessage)
           : mainStyle(spanActualMessage);
+      // if (elementData == 1) {
+      //   spanEl.style.display = "none";
+      //   chatNumber.style.display = "none";
+      //   actualTime.style.color = "rgb(151, 151, 151)";
+      // }
+      // Handle profile clicks
+      // messagesContainer.addEventListener("click", (event) => {
+      //   if (clickedElement.classList.contains("profile")) {
+      //     chatNumber.classList.add("hidden"); // Hide the chat number
+      //     sessionStorage.setItem("chatNumberVisible", "false"); // Save state in sessionStorage
+      //   }
+      // });
+      // document.addEventListener("DOMContentLoaded", () => {
+      //   const isChatNumberVisible =
+      //     sessionStorage.getItem("chatNumberVisible") === "true";
+      //   if (!isChatNumberVisible) {
+      //     chatNumber.classList.add("hidden"); // Hide the element if not visible
+      //   }
+      // });
+      const containerStyles = overallContainer.innerHTML;
       overallContainer.innerHTML = `
       <div class="new-container">
         <header class="new-clicked-header">
@@ -30,6 +63,7 @@ function containers(event) {
             <p>${titleElement.innerHTML}</p>
           </div>
           <div class="new-icons-container">
+            <input type="file" id="image-input" accept="image/*" style="display: none;" multiple>
             <ion-icon name="videocam-outline" class="new-icons"></ion-icon>
             <ion-icon name="call-outline" class="new-icons"></ion-icon>
             <ion-icon
@@ -42,12 +76,12 @@ function containers(event) {
         <h2 class='new-container-message'>New Message</h2>
           ${defaultCondition}
         </section> 
+      </div>
         `;
       createMessages(actualMessage);
       // STYLE FOR CONTAINER
-      // overallContainer.style.overflow = "auto";
       headerEl.style.padding = "0";
-      removeMessage();
+      removeMessage(containerStyles);
       break;
     }
     clickedElement = clickedElement.parentElement;
@@ -55,95 +89,54 @@ function containers(event) {
 }
 
 function createMessages(actualMessage) {
+  const sendContainer = document.querySelector(".send-container");
   const inputEl = document.querySelector(".input");
-  const textContainer = document.querySelector(".text-container");
   if (actualMessage.classList.contains("removed-container")) {
     return;
   } else {
-    inputEl.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        const currentTime = new Date().toLocaleString("en-Us", {
-          hour: "numeric",
-          minute: "numeric",
-          hour12: true,
-        });
-        const newMessageContainer = document.createElement("div");
-        newMessageContainer.classList.add("user-container");
-        newMessageContainer.style.marginBottom = "1rem";
-        const newMessageText = document.createElement("p");
-        newMessageText.innerHTML = inputEl.value;
-        const newMessageTime = document.createElement("p");
-        newMessageTime.classList.add("user-timer");
-        newMessageTime.innerHTML = `${currentTime} <ion-icon name="checkmark-done-outline"></ion-icon>`;
-        newMessageContainer.append(newMessageText, newMessageTime);
-        textContainer.append(newMessageContainer);
-        inputEl.value = "";
+    sendContainer.addEventListener("click", () => {
+      if (inputEl.value !== "" && inputEl.value !== "\n") {
+        sendingMessages(inputEl);
       }
     });
   }
 }
-
-function removeMessage() {
+function sendingMessages(inputEl) {
+  const textContainer = document.querySelector(".text-container");
+  /////
+  const time = dayjs();
+  const timeFormat = time.format("HH:mm A");
+  const newMessageContainer = document.createElement("div");
+  newMessageContainer.classList.add("user-container");
+  newMessageContainer.style.marginBottom = "1rem";
+  const newMessageText = document.createElement("p");
+  newMessageText.innerHTML = inputEl.value;
+  const newMessageTime = document.createElement("p");
+  newMessageTime.classList.add("user-timer");
+  newMessageTime.innerHTML = `${timeFormat} <ion-icon name="checkmark-done-outline"></ion-icon>`;
+  newMessageContainer.append(newMessageText, newMessageTime);
+  textContainer.append(newMessageContainer);
+  sendTextToArray(inputEl, timeFormat);
+  inputEl.value = "";
+}
+function removeMessage(containerStyles) {
   document.querySelector(".arrow-back").addEventListener("click", () => {
     overallContainer.innerHTML = containerStyles;
-    const mainContainer = document.getElementById("js-messages");
-    mainContainer.addEventListener("click", containers);
+    const messagesContainer = document.getElementById("js-messages");
+    messagesContainer.addEventListener("click", containers);
   });
+  // window.addEventListener("keydown", (event) => {
+  //   if (event.key === "Backspace") {
+  //     overallContainer.innerHTML = containerStyles;
+  //     const messagesContainer = document.getElementById("js-messages");
+  //     messagesContainer.addEventListener("click", containers);
+  //   }
+  // });
 }
-function mainStyle(spanActualMessage) {
-  let style = `
-          <div class="text-container">
-              <div class="user-received-container voice-container">
-                <p class="voice-message">${spanActualMessage.innerHTML}</p>
-                 <p class="user-received-timer">21:15 PM</p>
-              </div>
-          </div>
-          <div class="input-mic-container">
-            <div class="input-container">
-              <input class="input" type="textArea" placeholder="Message" />
-              <div class="smile-icon">
-                <ion-icon class='happy-icon' name="happy-outline"></ion-icon>
-              </div>
-              <div class="link-camera">
-                <ion-icon name="link-outline"></ion-icon>
-                <ion-icon name="camera-outline"></ion-icon>
-              </div>
-            </div>
-            <div class="mic-container">
-              <ion-icon name="mic-outline"></ion-icon>
-            </div>
-          </div>`;
-  return style;
-}
-function newStyles(actualMessage) {
-  if (actualMessage.classList.contains("removed-container")) {
-    let removedMessage = `<div class="text-container">
-          </div>
-          <p class="removed-message">${actualMessage.innerHTML}</p>`;
-    return removedMessage;
-  } else {
-    let voiceMessage = `
-    <div class="text-container">
-        <div class="user-received-container voice-container">
-          <p class="voice-message">${actualMessage.innerHTML}</p>
-           <p class="user-received-timer">21:15 PM</p>
-        </div>;
-    </div>
-     <div class="input-mic-container">
-        <div class="input-container">
-          <input class="input" type="textArea" placeholder="Message" />
-          <div class="smile-icon">
-            <ion-icon class='happy-icon' name="happy-outline"></ion-icon>
-          </div>
-          <div class="link-camera">
-            <ion-icon name="link-outline"></ion-icon>
-            <ion-icon name="camera-outline"></ion-icon>
-          </div>
-        </div>
-        <div class="mic-container">
-          <ion-icon name="mic-outline"></ion-icon>
-        </div>
-      </div>`;
-    return voiceMessage;
-  }
+
+function sendTextToArray(inputEl, timeFormat) {
+  matchingData.arrays.push(inputEl.value);
+  matchingData.time.push(timeFormat);
+  localStorage.setItem("messages", JSON.stringify(firstArray));
+  console.log(matchingData.arrays);
 }

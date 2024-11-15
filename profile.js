@@ -1,34 +1,20 @@
 const profileData = [
   {
-    img: "<img src='img/Duck.jpg' alt=''/>",
-    title: "Room 52",
-    sender: "Henry",
-    message: "Nope",
-    time: "20:47",
-    number: 1,
+    computerMessage: "Nope",
   },
   {
-    img: "<img src='img/Duck.jpg' alt=''/>",
-    title: "Room 52",
-    sender: "Henry",
-    message: "Nope",
-    time: "20:47",
-    number: 1,
+    computerMessage: "Nope",
   },
   {
-    img: "<img src='img/Duck.jpg' alt=''/>",
-    title: "Room 52",
-    sender: "Henry",
-    message: "Nope",
-    time: "20:47",
-    number: 1,
+    computerMessage: "Nope",
   },
   {
-    img: "<img src='img/Duck.jpg' alt=''/>",
-    title: "Room 52",
-    sender: "Henry",
-    message: "Nope",
-    time: "20:47",
-    number: 1,
+    computerMessage: "Nope",
+  },
+  {
+    computerMessage: "Nope",
+  },
+  {
+    computerMessage: "Nope",
   },
 ];

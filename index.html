@@ -30,7 +30,7 @@
             ></a>
           </div>
         </header>
-        <main>
+        <main id="js-main">
           <div class="icon-texts">
             <p class="chats">Chats <span class="chat-number">1</span></p>
             <p>Updates</p>
@@ -43,8 +43,8 @@
             <a class="archived" href="#">Archived</a>
           </div>
           <div class="messages-container" id="js-messages">
-            <div class="messages">
-              <img src="img/Duck.jpg" alt="" loading="lazy" />
+            <div class="messages" data-profile-id="1">
+              <img src="img/Duck.jpg" alt="Duck Image" loading="lazy" />
               <div class="texts">
                 <div class="texts-time">
                   <p class="title">Room 52</p>
@@ -60,12 +60,12 @@
                 </div>
               </div>
             </div>
-            <div class="messages">
-              <img src="img/Chelsea.jpg" alt="" loading="lazy" />
+            <div class="messages" data-profile-id="2">
+              <img src="img/Chelsea.jpg" alt="Chelsea Logo" loading="lazy" />
               <div class="texts">
                 <div class="texts-time">
                   <p class="title">CHELSEA FANS</p>
-                  <p class="actual-time">Yesterday</p>
+                  <p class="actual-time">12:00</p>
                 </div>
                 <p class="actual-message">
                   John:
@@ -75,12 +75,12 @@
                 </p>
               </div>
             </div>
-            <div class="messages">
-              <img src="img/Computer.jpg" alt="" loading="lazy" />
+            <div class="messages" data-profile-id="3">
+              <img src="img/Computer.jpg" alt="Computer Image" loading="lazy" />
               <div class="texts">
                 <div class="texts-time">
                   <p class="title">CIT STUDENTS</p>
-                  <p class="actual-time">10:23</p>
+                  <p class="actual-time">8:00</p>
                 </div>
                 <p class="actual-message">
                   Courserep:
@@ -90,12 +90,16 @@
                 </p>
               </div>
             </div>
-            <div class="messages">
-              <img src="img/Messi.jpg" alt="" loading="lazy" />
+            <div class="messages" data-profile-id="4">
+              <img
+                src="img/Messi.jpg"
+                alt="Messi argenina jersey"
+                loading="lazy"
+              />
               <div class="texts">
                 <div class="texts-time">
                   <p class="title">MESSI FANS</p>
-                  <p class="actual-time">1/4/24</p>
+                  <p class="actual-time">Yesterday</p>
                 </div>
                 <p class="actual-message">
                   Daniel:
@@ -105,12 +109,16 @@
                 </p>
               </div>
             </div>
-            <div class="messages">
-              <img src="img/Coding.jpg" alt="" loading="lazy" />
+            <div class="messages" data-profile-id="5">
+              <img
+                src="img/Coding.jpg"
+                alt="Bunch of code on a laptop"
+                loading="lazy"
+              />
               <div class="texts">
                 <div class="texts-time">
                   <p class="title">DEVELOPERS</p>
-                  <p class="actual-time">17:30</p>
+                  <p class="actual-time">Yesterday</p>
                 </div>
                 <p class="actual-message">
                   Ibeh:
@@ -120,12 +128,16 @@
                 </p>
               </div>
             </div>
-            <div class="messages">
-              <img src="img/Tennis.jpg" alt="" loading="lazy" />
+            <div class="messages" data-profile-id="6">
+              <img
+                src="img/Tennis.jpg"
+                alt="Female tennis player"
+                loading="lazy"
+              />
               <div class="texts">
                 <div class="texts-time">
                   <p class="title">Alabi</p>
-                  <p class="actual-time">18:47</p>
+                  <p class="actual-time">9/11/24</p>
                 </div>
                 <div>
                   <p
@@ -143,12 +155,16 @@
                 </div>
               </div>
             </div>
-            <div class="messages">
-              <img src="img/Dragonball.jpg" alt="" loading="lazy" />
+            <div class="messages" data-profile-id="7">
+              <img
+                src="img/Dragonball.jpg"
+                alt="Toy version of Dragonball"
+                loading="lazy"
+              />
               <div class="texts">
                 <div class="texts-time">
                   <p class="title">Nonso</p>
-                  <p class="actual-time">12/14/23</p>
+                  <p class="actual-time">8/11/24</p>
                 </div>
                 <div>
                   <p
@@ -166,12 +182,16 @@
                 </div>
               </div>
             </div>
-            <div class="messages">
-              <img src="img/Betting.jpg" alt="" loading="lazy" />
+            <div class="messages" data-profile-id="8">
+              <img
+                src="img/Betting.jpg"
+                alt="Picture of poker"
+                loading="lazy"
+              />
               <div class="texts">
                 <div class="texts-time">
                   <p class="title">Tactics</p>
-                  <p class="actual-time">1/4/23</p>
+                  <p class="actual-time">1/11/24</p>
                 </div>
                 <div>
                   <p class="actual-message removed-container">
@@ -194,6 +214,6 @@
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
     <!-- JS-FILE -->
-    <script src="main.js"></script>
+    <script type="module" src="main.js"></script>
   </body>
 </html>
