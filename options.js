@@ -62,19 +62,19 @@ export function newStyles(actualMessage, originalMessage) {
     return voiceMessage;
   }
 }
+
 function sendMessages() {
   let html = "";
   matchingData.arrays.forEach((userMessage, values) => {
     html += `<div class="user-container">
     <p class="voice-message">${userMessage}</p>
      <p class="user-timer">${matchingData.time[values]}<ion-icon name="checkmark-done-outline"></ion-icon</p>
- </div>`;
+ </div>
+  <div class="user-received-container voice-container">
+    <p class="voice-message">${matchingData.computerResponse[values]}</p>
+    <p class="user-received-timer">${matchingData.time[values]}</p>
+    </div>
+ `;
   });
   return html;
 }
-// const fileInput = document.getElementById("image-input");
-// const icon = document.querySelector(".link");
-// icon.addEventListener("click", () => {
-//   console.log("Hi");
-//   fileInput.click();
-// });

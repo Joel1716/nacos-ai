@@ -1,5 +1,5 @@
 import { mainStyle, newStyles } from "./options.js";
-import { firstArray } from "./data.js";
+import { messageData, computerResponseData } from "./data.js";
 import { createProfileLayout, profileData } from "./profile.js";
 import dayjs from "https://unpkg.com/dayjs@1.8.9/esm/index.js";
 
@@ -9,7 +9,6 @@ const overallContainer = document.querySelector(".overall-container");
 const messagesContainer = document.getElementById("js-messages");
 const main = document.getElementById("js-main");
 const headerEl = document.getElementById("header");
-
 const time = dayjs();
 export let matchingData;
 messagesContainer.addEventListener("click", containers);
@@ -18,7 +17,7 @@ function containers(event) {
   while (clickedElement !== messagesContainer) {
     if (clickedElement.classList.contains("messages")) {
       const elementData = clickedElement.dataset.profileId;
-      firstArray.forEach((data) => {
+      messageData.forEach((data) => {
         if (elementData == data.id) {
           matchingData = data;
         }
@@ -32,11 +31,8 @@ function containers(event) {
         clickedElement.querySelector("#js-span-message");
       let defaultCondition = "";
       defaultCondition = profileData[elementData - 1].sender
-        ? mainStyle(profileData[elementData - 1].receivedMessage)
-        : newStyles(
-            actualMessage,
-            profileData[elementData - 1].receivedMessage
-          );
+        ? mainStyle(profileData[elementData - 1].initialMessage)
+        : newStyles(actualMessage, profileData[elementData - 1].initialMessage);
       const containerStyles = overallContainer.innerHTML;
       overallContainer.innerHTML = `
       <div class="new-container">
@@ -99,7 +95,7 @@ function sendingMessages(inputEl) {
   newMessageTime.innerHTML = `${timeMeridianFormat} <ion-icon name="checkmark-done-outline"></ion-icon>`;
   newMessageContainer.append(newMessageText, newMessageTime);
   textContainer.append(newMessageContainer);
-  sendTextToArray(inputEl, timeMeridianFormat, timeFormat);
+  getComputerResponse(inputEl, timeMeridianFormat, timeFormat);
   inputEl.value = "";
 }
 function removeMessage(containerStyles) {
@@ -108,12 +104,57 @@ function removeMessage(containerStyles) {
     const messagesContainer = document.getElementById("js-messages");
     messagesContainer.addEventListener("click", containers);
   });
+  window.addEventListener("popstate", function (event) {
+    if (event.state) {
+      createProfileLayout();
+      const messagesContainer = document.getElementById("js-messages");
+      messagesContainer.addEventListener("click", containers);
+    } else {
+      return;
+    }
+  });
+}
+function getComputerResponse(inputEl, timeMeridianFormat, timeFormat) {
+  const textContainer = document.querySelector(".text-container");
+  const lowerCase = inputEl.value.toLowerCase();
+  const words = lowerCase.split(" ");
+  let computerMessage = "";
+  computerResponseData.forEach((keyWord) => {
+    keyWord.key.forEach((keys) => {
+      if (words.includes(keys)) {
+        computerMessage = keyWord.message;
+      }
+    });
+  });
+  if (computerMessage !== "") {
+  } else {
+    computerMessage = "Omo gee i don't understand what you saying";
+  }
+  setTimeout(() => {
+    const computerResponseContainer = document.createElement("div");
+    computerResponseContainer.classList.add("user-received-container");
+    const computerResponse = document.createElement("p");
+    computerResponse.innerHTML = computerMessage;
+    const computerTime = document.createElement("p");
+    computerTime.innerHTML = timeFormat;
+    computerTime.classList.add("user-received-timer");
+    computerResponseContainer.append(computerResponse, computerTime);
+    textContainer.append(computerResponseContainer);
+    console.log(computerMessage);
+  }, 2000);
+  sendTextToArray(inputEl, timeMeridianFormat, timeFormat, computerMessage);
 }
 
-function sendTextToArray(inputEl, timeMeridianFormat, timeFormat) {
+function sendTextToArray(
+  inputEl,
+  timeMeridianFormat,
+  timeFormat,
+  computerMessage
+) {
   matchingData.arrays.push(inputEl.value);
   matchingData.timeMeridian.push(timeMeridianFormat);
   matchingData.time.push(timeFormat);
-  localStorage.setItem("messages", JSON.stringify(firstArray));
+  matchingData.computerResponse.push(computerMessage);
+  localStorage.setItem("messages", JSON.stringify(messageData));
   console.log(matchingData.arrays);
 }

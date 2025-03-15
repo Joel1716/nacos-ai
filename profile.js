@@ -1,11 +1,12 @@
-import { firstArray } from "./data.js";
+import { messageData } from "./data.js";
 export const profileData = [
   {
     id: 1,
     img: "<img src='img/Duck.jpg' alt='Duck Image' loading='lazy' />",
     title: "Room 52",
     actualTime: "20:47",
-    receivedMessage: "Nope",
+    initialMessage: "Nope",
+    computerResponse: "",
     sender: "Henry:",
     sentMessage: "",
   },
@@ -14,7 +15,8 @@ export const profileData = [
     img: "<img src='img/Chelsea.jpg' alt='Chelsea Logo' loading='lazy' />",
     title: "CHELSEA FANS",
     actualTime: "12:00",
-    receivedMessage: "Happy New year to all Chelsea fans",
+    initialMessage: "Happy New year to all Chelsea fans",
+    computerResponse: "",
     sender: "John:",
     sentMessage: "",
   },
@@ -23,7 +25,8 @@ export const profileData = [
     img: "<img src='img/Computer.jpg' alt='Computer Image' loading='lazy' />",
     title: "CIT STUDENTS",
     actualTime: "8:00",
-    receivedMessage: "Morning, lecturer said we have a test",
+    initialMessage: "Morning, lecturer said we have a test",
+    computerResponse: "",
     sender: "Courserep:",
     sentMessage: "",
   },
@@ -32,7 +35,8 @@ export const profileData = [
     img: "<img src='img/Messi.jpg' alt='Messi Argenina jersey' loading='lazy' />",
     title: "MESSI FANS",
     actualTime: "Yesterday",
-    receivedMessage: "Hope We are all Messi fans here",
+    initialMessage: "Hope We are all Messi fans here",
+    computerResponse: "",
     sender: "Chizzy:",
     sentMessage: "",
   },
@@ -41,7 +45,8 @@ export const profileData = [
     img: "<img src='img/Coding.jpg' alt='Bunch of code on a laptop Screen' loading='lazy' />",
     title: "DEVELOPERS",
     actualTime: "Yesterday",
-    receivedMessage: "Wishing us a great year in our various tech careers",
+    initialMessage: "Wishing us a great year in our various tech careers",
+    computerResponse: "",
     sender: "Ibeh:",
     sentMessage: "",
   },
@@ -50,7 +55,8 @@ export const profileData = [
     img: "<img src='img/Betting.jpg' alt='Bunch of code on a laptop Screen' loading='lazy' />",
     title: "Alabi",
     actualTime: "9/11/24",
-    receivedMessage: "No it was more than 1",
+    initialMessage: "No it was more than 1",
+    computerResponse: "",
     sentMessage: "",
   },
   {
@@ -58,8 +64,9 @@ export const profileData = [
     img: "<img src='img/Dragonball.jpg' alt='Toy version of Dragonball' loading='lazy' />",
     title: "Nonso",
     actualTime: "8/11/24",
-    receivedMessage:
+    initialMessage:
       "<ion-icon name='call-outline' id='voice-icon'></ion-icon> Voice call",
+    computerResponse: "",
     sentMessage: "",
   },
   {
@@ -67,23 +74,27 @@ export const profileData = [
     img: "<img src='img/Tennis.jpg' alt='Picture of poker' loading='lazy' />",
     title: "Tactics",
     actualTime: "1/11/24",
-    receivedMessage: "Daniell removed you",
+    initialMessage: "Daniell removed you",
+    computerResponse: "",
     sentMessage: "",
   },
 ];
 const overallContainer = document.querySelector(".overall-container");
 function createProfileMessages() {
   let profileMessages = "";
-  let messageData = "";
+  let eachProfileData = "";
   profileData.forEach((profiles) => {
-    firstArray.forEach((data) => {
+    messageData.forEach((data) => {
       if (data.id === profiles.id) {
-        messageData = data;
-        profiles.sentMessage = messageData.arrays.at(-1);
-        if (messageData.time.at(-1) === undefined) {
+        eachProfileData = data;
+        profiles.sentMessage = eachProfileData.arrays.at(-1);
+        if (eachProfileData.time.at(-1) === undefined) {
           return;
         } else {
-          profiles.actualTime = messageData.time.at(-1);
+          profiles.actualTime = eachProfileData.time.at(-1);
+        }
+        if (eachProfileData.computerResponse.at(-1) !== undefined) {
+          profiles.computerResponse = eachProfileData.computerResponse.at(-1);
         }
       }
     });
@@ -97,28 +108,28 @@ function createProfileMessages() {
       profiles.id !== 8
         ? `<div>
             <p class="actual-message">
-             ${profiles.receivedMessage}
+             ${profiles.initialMessage}
             </p>
           </div>`
         : `<div>
             <p class="actual-message removed-container">
-             ${profiles.receivedMessage}
+             ${profiles.initialMessage}
             </p>
           </div>`;
     /// FOR NON-GROUPS
     const noSender =
       profiles.sender !== undefined
         ? `<p class="actual-message">
-                    ${profiles.sender} <span id="js-span-message">${profiles.receivedMessage}</span>
+                    ${profiles.sender} <span id="js-span-message">${profiles.initialMessage}</span>
                   </p>`
         : `${videoOrRemoved}`;
-    //// Profiles that have a sent message
+    //// Profiles that have a received message
     const sendMessage =
       profiles.sentMessage === undefined
         ? `${noSender}`
         : `<div>
             <p class="actual-message">
-          <ion-icon name="checkmark-done-outline"></ion-icon><span class='new-message'>${profiles.sentMessage}</span>
+              <span id="js-span-message">${profiles.computerResponse}</span>
             </p>
           </div>`;
     ////
