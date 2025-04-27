@@ -1,90 +1,59 @@
-import { mainStyle, newStyles } from "./options.js";
+import { sendMessages } from "./options.js";
 import { messageData, computerResponseData } from "./data.js";
-import { createProfileLayout, profileData } from "./profile.js";
-import dayjs from "https://unpkg.com/dayjs@1.8.9/esm/index.js";
-
-createProfileLayout();
 /// VARIABLES
 const overallContainer = document.querySelector(".overall-container");
-const messagesContainer = document.getElementById("js-messages");
-const main = document.getElementById("js-main");
-const headerEl = document.getElementById("header");
-const time = dayjs();
-export let matchingData;
-messagesContainer.addEventListener("click", containers);
-function containers(event) {
-  let clickedElement = event.target;
-  while (clickedElement !== messagesContainer) {
-    if (clickedElement.classList.contains("messages")) {
-      const elementData = clickedElement.dataset.profileId;
-      messageData.forEach((data) => {
-        if (elementData == data.id) {
-          matchingData = data;
-        }
-      });
-      const imageElement = clickedElement.querySelector("img");
-      imageElement.classList.add("clicked-image");
-      const titleElement = clickedElement.querySelector(".title");
-      ///  Saving the original HTML
-      const actualMessage = clickedElement.querySelector(".actual-message");
-      const spanActualMessage =
-        clickedElement.querySelector("#js-span-message");
-      let defaultCondition = "";
-      defaultCondition = profileData[elementData - 1].sender
-        ? mainStyle(profileData[elementData - 1].initialMessage)
-        : newStyles(actualMessage, profileData[elementData - 1].initialMessage);
-      const containerStyles = overallContainer.innerHTML;
-      overallContainer.innerHTML = `
+function generateLayout() {
+  overallContainer.innerHTML = `
       <div class="new-container">
         <header class="new-clicked-header">
           <div class="arrow-pic-name">
             <ion-icon name="arrow-back-outline" class="new-icons arrow-back"></ion-icon>
-            ${imageElement.outerHTML}
-            <p>${titleElement.innerHTML}</p>
-          </div>
-          <div class="new-icons-container">
-            <ion-icon name="videocam-outline" class="new-icons"></ion-icon>
-            <ion-icon name="call-outline" class="new-icons"></ion-icon>
-            <ion-icon
-              name="ellipsis-vertical-outline"
-              class="new-icons"
-            ></ion-icon>
+            <img style="margin-right: 2px" src='img/nacos.jpg' alt='Duck Image' loading='lazy' />
+            <p>NACOS &nbsp;AI</p>
           </div>
         </header>
         <section class="message-send-container">
         <h2 class='new-container-message'>New Message</h2>
-          ${defaultCondition}
+          <div class="text-container">
+               ${sendMessages()}
+           </div>
+           <div class="input-mic-container">
+             <div class="input-container">
+               <textarea class="input" placeholder="Message"></textarea>
+             </div>
+             <button class="send-container">
+               <ion-icon name="arrow-forward-outline"></ion-icon>
+             </button>
+           </div>
         </section> 
       </div>
         `;
-      createMessages(actualMessage);
-      // STYLE FOR CONTAINER
-      headerEl.style.padding = "0";
-      removeMessage(containerStyles);
-      break;
-    }
-    clickedElement = clickedElement.parentElement;
-  }
+  createMessages();
 }
+generateLayout();
+// STYLE FOR CONTAINER
 
-function createMessages(actualMessage) {
+function createMessages() {
   const sendContainer = document.querySelector(".send-container");
   const inputEl = document.querySelector(".input");
-  if (actualMessage.classList.contains("removed-container")) {
-    return;
-  } else {
-    sendContainer.addEventListener("click", () => {
-      if (inputEl.value !== "" && inputEl.value !== "\n") {
-        sendingMessages(inputEl);
-      }
-    });
-  }
+  sendContainer.addEventListener("click", () => {
+    if (inputEl.value !== "" && inputEl.value !== "\n") {
+      sendingMessages(inputEl);
+    }
+  });
 }
 function sendingMessages(inputEl) {
   const textContainer = document.querySelector(".text-container");
+  /// GETTING THE TIME
+  const now = new Date();
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
   /////
-  const timeMeridianFormat = time.format("HH:mm A");
-  const timeFormat = time.format("HH:mm");
+  const timeMeridianFormat = `${hours}:${minutes}`;
+  const timeFormat = `${hours}:${minutes}`;
   const newMessageContainer = document.createElement("div");
   newMessageContainer.classList.add("user-container");
   newMessageContainer.style.marginBottom = "1rem";
@@ -97,22 +66,6 @@ function sendingMessages(inputEl) {
   textContainer.append(newMessageContainer);
   getComputerResponse(inputEl, timeMeridianFormat, timeFormat);
   inputEl.value = "";
-}
-function removeMessage(containerStyles) {
-  document.querySelector(".arrow-back").addEventListener("click", () => {
-    createProfileLayout();
-    const messagesContainer = document.getElementById("js-messages");
-    messagesContainer.addEventListener("click", containers);
-  });
-  window.addEventListener("popstate", function (event) {
-    if (event.state) {
-      createProfileLayout();
-      const messagesContainer = document.getElementById("js-messages");
-      messagesContainer.addEventListener("click", containers);
-    } else {
-      return;
-    }
-  });
 }
 function getComputerResponse(inputEl, timeMeridianFormat, timeFormat) {
   const textContainer = document.querySelector(".text-container");
@@ -128,7 +81,8 @@ function getComputerResponse(inputEl, timeMeridianFormat, timeFormat) {
   });
   if (computerMessage !== "") {
   } else {
-    computerMessage = "Omo gee i don't understand what you saying";
+    computerMessage =
+      "Sorry i only understand questions concerning NACOS presidential election. Clarify what you are saying";
   }
   setTimeout(() => {
     const computerResponseContainer = document.createElement("div");
@@ -141,7 +95,7 @@ function getComputerResponse(inputEl, timeMeridianFormat, timeFormat) {
     computerResponseContainer.append(computerResponse, computerTime);
     textContainer.append(computerResponseContainer);
     console.log(computerMessage);
-  }, 2000);
+  }, 1000);
   sendTextToArray(inputEl, timeMeridianFormat, timeFormat, computerMessage);
 }
 
@@ -151,10 +105,11 @@ function sendTextToArray(
   timeFormat,
   computerMessage
 ) {
-  matchingData.arrays.push(inputEl.value);
-  matchingData.timeMeridian.push(timeMeridianFormat);
-  matchingData.time.push(timeFormat);
-  matchingData.computerResponse.push(computerMessage);
-  localStorage.setItem("messages", JSON.stringify(messageData));
-  console.log(matchingData.arrays);
+  messageData.forEach((data) => {
+    data.arrays.push(inputEl.value);
+    data.timeMeridian.push(timeMeridianFormat);
+    data.time.push(timeFormat);
+    data.computerResponse.push(computerMessage);
+    localStorage.setItem("nacos", JSON.stringify(messageData));
+  });
 }

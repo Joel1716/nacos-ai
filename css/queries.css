@@ -83,6 +83,9 @@
 /* WIDTH OF 496px */
 
 @media (max-width: 31em) {
+  html {
+    font-size: 56.25%;
+  }
   .title {
     font-size: 1.9rem;
   }
@@ -141,6 +144,9 @@
   }
 }
 @media (max-width: 21em) {
+  html {
+    font-size: 50%;
+  }
   img {
     width: 5rem;
     height: 5rem;
@@ -150,11 +156,5 @@
   }
   .new-icons {
     font-size: 2rem;
-  }
-  .user-received-container {
-    width: 7.5rem;
-  }
-  .user-container {
-    width: 20rem;
   }
 }
