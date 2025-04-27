@@ -36,7 +36,7 @@ export const computerResponseData = [
     message: "I will give my best response to your question. What is it.?",
   },
   {
-    key: ["skills", "experience", "why"],
+    key: ["skills", "experience", "why","reason","reasons"],
     message:
       "<img style='object-position: right;' src='img/eze 2.jpg' alt='Eze Skills' loading='lazy' />",
   },
