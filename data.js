@@ -22,11 +22,6 @@ export const computerResponseData = [
     message: "I can't help you with that",
   },
   {
-    key: ["vote"],
-    message:
-      "<img src='img/eze.jpg' alt='Vote flier for eze' loading='lazy' />",
-  },
-  {
     key: ["don't"],
     message:
       "Why? Eze Daniel has shown his experience in helping NACOS in different fields e.g: QA engineer",
@@ -39,6 +34,11 @@ export const computerResponseData = [
     key: ["skills", "experience", "why","reason","reasons"],
     message:
       "<img style='object-position: right;' src='img/eze 2.jpg' alt='Eze Skills' loading='lazy' />",
+  },
+  {
+    key: ["vote", "president"],
+    message:
+      "<img src='img/eze.jpg' alt='Vote flier for eze' loading='lazy' />",
   },
   {
     key: [
